@@ -1,6 +1,6 @@
 # \<feed-widget\>
 
-Strofront feed widget POC
+Strofront feed widget POC: [example](https://prezmo.github.io/polymer_feeds)
 
 ## Install the Polymer-CLI
 
