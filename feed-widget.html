@@ -1,0 +1,65 @@
+<link rel="import" href="/bower_components/polymer/polymer-element.html">
+<link rel="import" href="/bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="/bower_components//polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="./feed-product.html">
+
+<dom-module id="feed-widget">
+  <template>
+    <style>
+      .feed {
+        max-width: 100%;
+        display: block;
+        float: none;
+        clear: both;
+      }
+    </style>
+
+    <h2>{{feed.name}}</h2>
+    <p class="description">{{feed.description}}</p>
+    <template is="dom-if" if="{{isLoaded}}">
+      <div class="feed">
+        <template is="dom-repeat" items="{{feed.products}}">
+          <feed-product product="{{item}}"></feed-product>
+        </template>
+      </div>
+    </template>
+    <template is="dom-if" if="{{!isLoaded}}">
+      <div>Loading...</div>
+    </template>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class FeedWidget extends Polymer.Element {
+      static get is() {
+        return 'feed-widget';
+      }
+      static get properties() {
+        return {
+          uuid: {
+            type: String
+          },
+          orientation: {
+            type: String
+          }
+        };
+      }
+
+      constructor() {
+        super();
+        this.isLoaded = false;
+
+        window.AllexisSDK.getFeed(this.uuid)
+          .then(feed => {
+            this.feed = feed;
+            this.isLoaded = true;
+          });
+      }
+    }
+
+    window.customElements.define(FeedWidget.is, FeedWidget);
+  </script>
+</dom-module>
